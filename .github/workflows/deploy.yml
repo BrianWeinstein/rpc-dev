@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # the branch you push your source code to
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use a recent Node.js version
+
+      - name: Install dependencies 🔧
+        run: npm install # or yarn install
+
+      - name: Build 🏗️
+        run: npm run build
+        env:
+          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }} # Inject the secret here
+          # If using Create React App, it would be REACT_APP_GEMINI_API_KEY: ${{ secrets.REACT_APP_GEMINI_API_KEY }}
+
+      - name: Deploy 🚀
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./dist # or ./dist if your Vite build outputs to dist
+          # For single page applications, set cname and enable history api fallback
+          # cname: your-custom-domain.com # Uncomment if you have a custom domain
+          # enable_jekyll: false # Set to false if you are not using Jekyll
+          # history_api_fallback: true # Useful for React Router or SPA routing

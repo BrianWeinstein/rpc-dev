@@ -1,0 +1,8 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: Import the Inter font from Google Fonts */
+/* If you prefer, you can add a <link> tag in public/index.html instead. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
