@@ -235,7 +235,7 @@ const App = () => {
       const imageMimeType = mimeType.split(':')[1];
       console.log('Image MIME type:', imageMimeType);
 
-      const describePrompt = `Describe this photo in great detail. Do not mention notable people or landmarks by name. If people appear in the photo, describe their apperances in detail.`;
+      const describePrompt = `Describe this photo in great detail. Do not mention notable people or landmarks by name. If people appear in the photo, describe their apperances (skin tone, facial features, etc.) in detail.`;
       const describePayload = {
         contents: [
           {
