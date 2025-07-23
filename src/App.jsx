@@ -1198,7 +1198,7 @@ const App = () => {
         )}
       </div>
       {/* Small text at the very bottom */}
-      <div className="mt-8 mb-4 text-xs text-gray-400 text-center flex items-center justify-center space-x-2">
+      <div className="mt-8 mb-2 text-xs text-gray-400 text-center flex items-center justify-center space-x-2">
         <p><a href="https://github.com/BrianWeinstein/rpc-dev" target="_blank" className="hover:underline">About</a></p>
         <p>•</p> {/* Separator */}
         {/* Debug Mode Toggle Switch */}
