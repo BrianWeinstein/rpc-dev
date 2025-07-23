@@ -1103,7 +1103,7 @@ const App = () => {
               {/* Left 75% for Camera */}
               <button
                 onClick={handleOpenCamera}
-                className="flex-grow w-3/4 py-3 px-2 bg-blue-700 text-white hover:bg-blue-700 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-l-lg"
+                className="flex-grow w-3/4 py-3 px-2 bg-blue-600 text-white hover:bg-blue-600 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-l-lg"
               >
                 {/* Corrected Camera SVG */}
                 <svg
@@ -1131,7 +1131,7 @@ const App = () => {
               {/* Right 25% for Upload (Dropdown Icon) */}
               <label
                 htmlFor="select-photo"
-                className="w-1/4 py-3 px-2 bg-blue-700 text-white hover:bg-blue-700 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-r-lg border-l-2 border-white cursor-pointer"
+                className="w-1/4 py-3 px-2 bg-blue-600 text-white hover:bg-blue-600 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-r-lg border-l-2 border-white cursor-pointer"
               >
                 <svg
                   className="w-4 h-4"
@@ -1206,13 +1206,13 @@ const App = () => {
           <span className="text-gray-400">Debug Mode</span>
           <button
             onClick={handleToggleDebugMode}
-            className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors duration-200 ease-in-out 
+            className={`relative inline-flex h-4 w-9 items-center rounded-full transition-colors duration-200 ease-in-out 
               ${isDebugMode ? 'bg-blue-500' : 'bg-gray-200'}
             `}
           >
             <span
-              className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ease-in-out
-                ${isDebugMode ? 'translate-x-6' : 'translate-x-1'}
+              className={`inline-block h-2 w-2 transform rounded-full transition-transform duration-200 ease-in-out
+                ${isDebugMode ? 'translate-x-6 bg-gray-200' : 'translate-x-1 bg-white'}
               `}
             ></span>
             <span
@@ -1225,7 +1225,7 @@ const App = () => {
             </span>
             <span
               className={`absolute left-1.5 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
-                ${isDebugMode ? 'text-white opacity-100' : 'text-gray-600 opacity-0'}
+                ${isDebugMode ? 'text-gray-200 opacity-100' : 'text-gray-400 opacity-0'}
               `}
               style={{ top: '50%', transform: 'translateY(-50%)' }}
             >
