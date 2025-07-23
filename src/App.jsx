@@ -104,28 +104,32 @@ const App = () => {
     // Ensure source has valid dimensions
     if (sourceWidth === 0 || sourceHeight === 0) return;
 
-    // Calculate source rectangle to crop the center square
-    const sourceAspectRatio = sourceWidth / sourceHeight;
+    // Calculate source rectangle to crop the center 3:4
+    const targetAspectRatio = 0.7022082939; //3 / 4;
     let sx, sy, sWidth, sHeight;
 
-    if (sourceAspectRatio > 1) { // Source is wider than tall (e.g., 16:9 video)
+    const sourceAspectRatio = sourceWidth / sourceHeight;
+
+    if (sourceAspectRatio > targetAspectRatio) { // Source is wider than 3:4 (e.g., 16:9 video)
       sHeight = sourceHeight;
-      sWidth = sourceHeight; // Take a square from the height
+      sWidth = sourceHeight * targetAspectRatio;
       sx = (sourceWidth - sWidth) / 2;
       sy = 0;
-    } else { // Source is taller or square (e.g., 9:16 video or square image)
+    } else { // Source is taller or 3:4 (e.g., 9:16 video or square image)
       sWidth = sourceWidth;
-      sHeight = sourceWidth; // Take a square from the width
+      sHeight = sourceWidth / targetAspectRatio;
       sx = 0;
       sy = (sourceHeight - sHeight) / 2;
     }
 
-    // tempCanvas will now be square, representing the cropped source
+
+    // tempCanvas will now be 3:4, representing the cropped source
     const tempCanvas = document.createElement('canvas');
     const tempCtx = tempCanvas.getContext('2d');
-    const desiredTempSize = 1024; // Arbitrary high resolution for pixel sampling
-    tempCanvas.width = desiredTempSize;
-    tempCanvas.height = desiredTempSize;
+    const desiredTempWidth = 1024; // Arbitrary high resolution for pixel sampling
+    const desiredTempHeight = Math.round((1/targetAspectRatio) * desiredTempWidth);
+    tempCanvas.width = desiredTempWidth;
+    tempCanvas.height = desiredTempHeight;
 
     // Draw the cropped section of the source onto the temp canvas, scaling it to desiredTempSize x desiredTempSize
     tempCtx.drawImage(
@@ -136,8 +140,8 @@ const App = () => {
       sHeight,    // sHeight: height of the source rectangle
       0,          // dx: x-coordinate of the top-left corner of the destination rectangle
       0,          // dy: y-coordinate of the top-left corner of the destination rectangle
-      desiredTempSize, // dWidth: width of the destination rectangle
-      desiredTempSize  // dHeight: height of the destination rectangle
+      desiredTempWidth, // dWidth: width of the destination rectangle
+      desiredTempHeight  // dHeight: height of the destination rectangle
     );
 
     const normalizedProgress = currentProgress / 100;
@@ -299,7 +303,7 @@ const App = () => {
       // Modified generateImage function - now takes no arguments
       const generateImage = async () => {
         const modelId = 'imagen-3.0-generate-002'; // Hardcoded model ID
-        const generatePayload = { instances: { prompt: generatePrompt }, parameters: { "sampleCount": 1, "aspectRatio": "1:1", "personGeneration": "allow_all", "safetySetting":"block_low_and_above"} }; // https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/imagen-api#parameter_list
+        const generatePayload = { instances: { prompt: generatePrompt }, parameters: { "sampleCount": 1, "aspectRatio": "3:4", "personGeneration": "allow_all", "safetySetting":"block_low_and_above"} }; // https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/imagen-api#parameter_list
         const generateApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:predict?key=${apiKey}`;
         console.log(`Calling Image Generation API (${modelId}):`, generateApiUrl);
 
@@ -567,7 +571,7 @@ const App = () => {
         }
       } else {
         setProgress(0); // Reset if not processing and no result/error
-        setGeneratedImageOpacity(0); // Ensure generated images are hidden
+        setGeneratedImageOpacity(0); // Ensure generated images is hidden
         if (ctx && canvas) { // Only clear if no error and no generated images
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
@@ -755,31 +759,37 @@ const App = () => {
       return;
     }
 
-    // Create a temporary canvas to draw the video frame at the desired output resolution (1024x1024)
+    // Define target output dimensions for 3:4 aspect ratio
+    const targetAspectRatio = 0.7022082939; //3 / 4;
+    const desiredOutputWidth = 1024;
+    const desiredOutputHeight = Math.round((1/targetAspectRatio) * desiredOutputWidth); // Approximately 1365
+
+    // Create a temporary canvas to draw the video frame at the desired output resolution (3:4)
     const captureCanvas = document.createElement('canvas');
     const captureCtx = captureCanvas.getContext('2d');
 
-    const desiredOutputSize = 1024; // User wants 1024x1024 output
-    captureCanvas.width = desiredOutputSize;
-    captureCanvas.height = desiredOutputSize;
+    captureCanvas.width = desiredOutputWidth;
+    captureCanvas.height = desiredOutputHeight;
 
-    // Calculate source rectangle to crop the center square from the video feed
-    const videoAspectRatio = originalVideoWidth / originalVideoHeight;
+    // Calculate source rectangle to crop the center 3:4 from the video feed
+    // const targetAspectRatio = 0.7022082939; //3 / 4;
     let sx, sy, sWidth, sHeight;
 
-    if (videoAspectRatio > 1) { // Video is wider than tall (e.g., 16:9)
+    const videoAspectRatio = originalVideoWidth / originalVideoHeight;
+
+    if (videoAspectRatio > targetAspectRatio) { // Video is wider than 3:4 (e.g., 16:9)
       sHeight = originalVideoHeight;
-      sWidth = originalVideoHeight; // Take a square from the height
+      sWidth = originalVideoHeight * targetAspectRatio;
       sx = (originalVideoWidth - sWidth) / 2;
       sy = 0;
-    } else { // Video is taller or square (e.g., 9:16 or 1:1)
+    } else { // Video is taller or 3:4 (e.g., 9:16 or 3:4)
       sWidth = originalVideoWidth;
-      sHeight = originalVideoWidth; // Take a square from the width
+      sHeight = originalVideoWidth / targetAspectRatio;
       sx = 0;
       sy = (originalVideoHeight - sHeight) / 2;
     }
 
-    // Draw the cropped section of the video onto the capture canvas, scaling it to 1024x1024
+    // Draw the cropped section of the video onto the capture canvas, scaling it to 3:4
     captureCtx.drawImage(
       video,
       sx,         // sx: x-coordinate of the top-left corner of the source rectangle
@@ -788,12 +798,12 @@ const App = () => {
       sHeight,    // sHeight: height of the source rectangle
       0,          // dx: x-coordinate of the top-left corner of the destination rectangle
       0,          // dy: y-coordinate of the top-left corner of the destination rectangle
-      desiredOutputSize, // dWidth: width of the destination rectangle
-      desiredOutputSize  // dHeight: height of the destination rectangle
+      desiredOutputWidth, // dWidth: width of the destination rectangle
+      desiredOutputHeight  // dHeight: height of the destination rectangle
     );
 
     const croppedDataUrl = captureCanvas.toDataURL('image/png');
-    console.log(`Captured video frame, cropped and scaled to square: ${desiredOutputSize}x${desiredOutputSize}`);
+    console.log(`Captured video frame, cropped and scaled to 3:4: ${desiredOutputWidth}x${desiredOutputHeight}`);
 
     // Set the original image data URL for display/comparison
     setOriginalImageDataUrl(croppedDataUrl);
@@ -846,31 +856,36 @@ const App = () => {
           const originalWidth = originalLoadedImage.width;
           const originalHeight = originalLoadedImage.height;
 
-          // Create a temporary canvas for cropping to 1024x1024
+          // Define target output dimensions for 3:4 aspect ratio
+          const desiredOutputWidth = 1024;
+          const desiredOutputHeight = Math.round((1/targetAspectRatio) * desiredOutputWidth); // Approximately 1365
+
+          // Create a temporary canvas for cropping to 3:4
           const croppedCanvas = document.createElement('canvas');
           const croppedCtx = croppedCanvas.getContext('2d');
 
-          const desiredOutputSize = 1024; // User wants 1024x1024 output
-          croppedCanvas.width = desiredOutputSize;
-          croppedCanvas.height = desiredOutputSize;
+          croppedCanvas.width = desiredOutputWidth;
+          croppedCanvas.height = desiredOutputHeight;
 
-          // Calculate source rectangle to crop the center square from the original image
-          const imageAspectRatio = originalWidth / originalHeight;
+          // Calculate source rectangle to crop the center 3:4 from the original image
+          const targetAspectRatio = 7022082939; //3 / 4;
           let sx, sy, sWidth, sHeight;
 
-          if (imageAspectRatio > 1) { // Image is wider than tall
+          const imageAspectRatio = originalWidth / originalHeight;
+
+          if (imageAspectRatio > targetAspectRatio) { // Image is wider than 3:4
               sHeight = originalHeight;
-              sWidth = originalHeight;
+              sWidth = originalHeight * targetAspectRatio;
               sx = (originalWidth - sWidth) / 2;
               sy = 0;
-          } else { // Image is taller or square
+          } else { // Image is taller or 3:4
               sWidth = originalWidth;
-              sHeight = originalWidth;
+              sHeight = originalWidth / targetAspectRatio;
               sx = 0;
               sy = (originalHeight - sHeight) / 2;
           }
 
-          // Draw the cropped section of the original image onto the new canvas, scaling it to 1024x1024
+          // Draw the cropped section of the original image onto the new canvas, scaling it to 3:4
           croppedCtx.drawImage(
               originalLoadedImage,
               sx,         // sx
@@ -879,12 +894,12 @@ const App = () => {
               sHeight,    // sHeight
               0,          // dx
               0,          // dy
-              desiredOutputSize, // dWidth
-              desiredOutputSize  // dHeight
+              desiredOutputWidth, // dWidth
+              desiredOutputHeight  // dHeight
           );
 
           const croppedDataUrl = croppedCanvas.toDataURL('image/png');
-          console.log(`Original image cropped and scaled to square dimensions: ${desiredOutputSize}x${desiredOutputSize}`);
+          console.log(`Original image cropped and scaled to 3:4 dimensions: ${desiredOutputWidth}x${desiredOutputHeight}`);
 
           // Store the cropped image data URL for side-by-side comparison
           setOriginalImageDataUrl(croppedDataUrl);
@@ -944,7 +959,7 @@ const App = () => {
 
         {/* Unified Image Display Area */}
         <div className={`mt-6 relative flex flex-col justify-center items-center overflow-hidden mx-auto rounded-md
-          ${showSideBySide ? 'h-[320px]' : 'w-[320px] h-[320px] bg-gray-100'}
+          ${showSideBySide ? 'h-[320px]' : 'w-[320px] h-[426px] bg-gray-100'} {/* Changed height to 426px for 3:4 ratio */}
         `}
         style={showSideBySide ? { width: 'min(95vw, 550px)' } : {}}
         >
