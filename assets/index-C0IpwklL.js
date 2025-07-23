@@ -55,7 +55,7 @@ Error generating stack: `+e.message+`
               ${it?"bg-blue-500":"bg-gray-200"}
             `,children:[D.jsx("span",{className:`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ease-in-out
                 ${it?"translate-x-6":"translate-x-1"}
-              `}),D.jsx("span",{className:`absolute right-1.5 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+              `}),D.jsx("span",{className:`absolute right-1 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
                 ${it?"text-white opacity-0":"text-gray-400 opacity-100"}
               `,style:{top:"50%",transform:"translateY(-50%)"},children:"Off"}),D.jsx("span",{className:`absolute left-1.5 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
                 ${it?"text-white opacity-100":"text-gray-600 opacity-0"}
