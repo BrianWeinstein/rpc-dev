@@ -13,7 +13,7 @@ const easeOutQuadWithMinSpeed = (t, minFactor) => {
 
 // Main App component
 const App = () => {
-  console.log('App component rendered');
+  // console.log('App component rendered');
 
   // State for the data URL of the original image (cropped square version)
   const [originalImageDataUrl, setOriginalImageDataUrl] = useState(null);
@@ -22,7 +22,6 @@ const App = () => {
 
   // State for the generated image URL (Standard Quality)
   const [generatedImageUrlStandard, setGeneratedImageUrlStandard] = useState(null);
-  // Removed: State for the generated image URL (Fast Quality) - no longer needed
 
   // State to control the opacity of the generated images for fade-in effect
   const [generatedImageOpacity, setGeneratedImageOpacity] = useState(0);
@@ -43,17 +42,8 @@ const App = () => {
   // State to control side-by-side comparison view (now for original and one generated image)
   const [showSideBySide, setShowSideBySide] = useState(false);
 
-  // Debug mode state: default to false for users, can be toggled
+  // Debug mode state: default to false upon load
   const [isDebugMode, setIsDebugMode] = useState(false);
-
-  // States for debug mode click handling
-  const [clickCount, setClickCount] = useState(0);
-  const lastClickTimeRef = useRef(0);
-  const clickTimeoutRef = useRef(null);
-  // New state for debug mode message
-  const [debugMessage, setDebugMessage] = useState('');
-  const [showDebugMessage, setShowDebugMessage] = useState(false);
-  const debugMessageTimeoutRef = useRef(null);
 
 
   // Refs for canvas and the loaded original image
@@ -206,7 +196,6 @@ const App = () => {
     setProgress(0); // Reset progress to 0 on retry
     setErrorMessage('');
     setGeneratedImageUrlStandard(null); // Clear previous standard generated image
-    // Removed: State for the generated image URL (Fast Quality) - no longer needed
     setGeneratedImageOpacity(0); // Ensure generated image is hidden at start of process
     setShowSideBySide(false); // Hide side-by-side view when starting new process
     setDescriptionText(''); // Clear previous description when starting a new process
@@ -428,7 +417,6 @@ const App = () => {
     setProgress(0);
     setErrorMessage('');
     setGeneratedImageUrlStandard(null);
-    // Removed: setGeneratedImageUrlFast(null);
     setGeneratedImageOpacity(0);
     setOriginalImageDataUrl(null); // Clear original image data
     setLastProcessedImageDataUrl(null); // Clear last processed image data
@@ -592,7 +580,7 @@ const App = () => {
         clearInterval(progressIntervalRef.current);
       }
     };
-  }, [isProcessing, generatedImageUrlStandard, errorMessage, isCameraActive]); // Removed generatedImageUrlFast from dependencies
+  }, [isProcessing, generatedImageUrlStandard, errorMessage, isCameraActive]);
 
   // NEW useEffect for live camera pixelation effect
   useEffect(() => {
@@ -635,7 +623,7 @@ const App = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
     };
-  }, [isCameraActive, isProcessing, errorMessage]); // Re-run when camera active or processing state changes
+  }, [isCameraActive, isProcessing, errorMessage]);
 
 
   // --- CAMERA FUNCTIONS ---
@@ -656,7 +644,6 @@ const App = () => {
 
     // Reset states relevant to starting a new camera session
     setGeneratedImageUrlStandard(null);
-    // Removed: State for the generated image URL (Fast Quality) - no longer needed
     setGeneratedImageOpacity(0);
     setOriginalImageDataUrl(null);
     setLastProcessedImageDataUrl(null); // Clear last processed image on new camera session
@@ -838,7 +825,6 @@ const App = () => {
 
     // Reset all states when a new file is selected
     setGeneratedImageUrlStandard(null);
-    // Removed: State for the generated image URL (Fast Quality) - no longer needed
     setGeneratedImageOpacity(0); // Ensure opacity is reset
     setOriginalImageDataUrl(null); // Clear previous original image data URL
     setLastProcessedImageDataUrl(null); // Clear last processed image on new file selection
@@ -931,118 +917,34 @@ const App = () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
-      // Clear debug click timeout on unmount
-      if (clickTimeoutRef.current) {
-        clearTimeout(clickTimeoutRef.current);
-      }
-      // Clear debug message timeout on unmount
-      if (debugMessageTimeoutRef.current) {
-        clearTimeout(debugMessageTimeoutRef.current);
-      }
     };
   }, []); // Run only once on mount and unmount
 
-  const handleDebugClick = () => {
-    const currentTime = Date.now();
-
-    if (isDebugMode) {
-      // If currently in debug mode, a single click exits debug mode
-      setIsDebugMode(false);
-      setClickCount(0); // Reset for next entry
-      lastClickTimeRef.current = 0;
-      if (clickTimeoutRef.current) {
-        clearTimeout(clickTimeoutRef.current);
-        clickTimeoutRef.current = null;
-      }
-      // Show "Debug Mode: Off" for 1 second
-      setDebugMessage('Debug Mode: Off');
-      setShowDebugMessage(true);
-      if (debugMessageTimeoutRef.current) {
-        clearTimeout(debugMessageTimeoutRef.current);
-      }
-      debugMessageTimeoutRef.current = setTimeout(() => {
-        setShowDebugMessage(false);
-        setDebugMessage(''); // Clear message after it disappears
-      }, 1000); // 1 second
-    } else {
-      // If not in debug mode, try to enter (5 clicks within 1 second)
-      let newClickCount;
-
-      // If this is the first click in a potential sequence, or if the previous sequence timed out
-      if (clickCount === 0 || (currentTime - lastClickTimeRef.current > 1000)) {
-        newClickCount = 1;
-        lastClickTimeRef.current = currentTime;
-        // Set a timeout to reset clickCount if no more clicks within 1 second
-        if (clickTimeoutRef.current) {
-          clearTimeout(clickTimeoutRef.current);
-        }
-        clickTimeoutRef.current = setTimeout(() => {
-          setClickCount(0);
-          lastClickTimeRef.current = 0;
-          clickTimeoutRef.current = null;
-        }, 1000);
-      } else {
-        // Increment click count within the 1-second window
-        newClickCount = clickCount + 1;
-      }
-      setClickCount(newClickCount);
-
-      // Check if 5 clicks occurred within the time limit
-      if (newClickCount === 5 && (currentTime - lastClickTimeRef.current <= 1000)) {
-        setIsDebugMode(true);
-        setClickCount(0); // Reset for next exit
-        lastClickTimeRef.current = 0;
-        if (clickTimeoutRef.current) {
-          clearTimeout(clickTimeoutRef.current);
-          clickTimeoutRef.current = null;
-        }
-        // Show "Debug Mode: On" persistently
-        setDebugMessage('Debug Mode: On');
-        setShowDebugMessage(true);
-        if (debugMessageTimeoutRef.current) {
-          clearTimeout(debugMessageTimeoutRef.current); // Clear any old "Off" timeout
-        }
-      }
-    }
+  // New function to toggle debug mode
+  const handleToggleDebugMode = () => {
+    setIsDebugMode(prevMode => !prevMode);
   };
 
 
   return (
-    <div className="min-h-dvh flex flex-col items-center font-serif bg-white pt-16"> {/* Removed p-4 here */}
+    <div className="min-h-dvh flex flex-col items-center font-sans bg-white pt-16">
       {/* Outer container for the entire app, now conditionally adjusts max-width and padding */}
       <div className={`w-full mx-auto text-center flex-grow
-        ${showSideBySide ? 'px-2' : 'max-w-lg px-4'} {/* Conditional padding added here */}
+        ${showSideBySide ? 'px-2' : 'max-w-lg px-4'}
       `}>
         {/* Header with Logo */}
         <div className="flex items-center justify-center mb-6">
           <img
-            src="https://brianweinstein.github.io/rpc-dev/favicon.png" // Changed to direct URL
+            src="https://brianweinstein.github.io/rpc-dev/favicon.png"
             alt="App Logo"
             className="w-8 h-8 mr-2 object-contain"
           />
           <h1 className="text-xl font-normal text-gray-900">Real Photo Camera 3100</h1>
         </div>
 
-      {/* <div className="mt-8 text-s text-gray-900 text-center">
-        <p>Lorem ipsum. Tktktk. Tktktk. Tktktk.</p>
-      </div> */}
-
-        {/* Debug Mode Toggle Square and Message */}
-        <div className="fixed bottom-2 left-2 flex items-center z-50">
-          <div
-            onClick={handleDebugClick}
-            className="w-10 h-10 bg-transparent rounded-sm cursor-pointer border border-gray-100/20" // Changed background to transparent
-          ></div>
-          {showDebugMessage && (
-            <span className="ml-2 px-2 py-1 bg-gray-700 text-white text-xs rounded-md shadow-md">
-              {debugMessage}
-            </span>
-          )}
-        </div>
-
         {/* Unified Image Display Area */}
         <div className={`mt-6 relative flex flex-col justify-center items-center overflow-hidden mx-auto rounded-md
-          ${showSideBySide ? 'h-[320px]' : 'w-[320px] h-[320px] bg-gray-100'} {/* Fixed height for compare mode */}
+          ${showSideBySide ? 'h-[320px]' : 'w-[320px] h-[320px] bg-gray-100'}
         `}
         style={showSideBySide ? { width: 'min(95vw, 550px)' } : {}}
         >
@@ -1077,7 +979,7 @@ const App = () => {
                 <>
                   <video
                     ref={videoRef}
-                    className="rounded-md w-full h-full object-contain relative z-0" // object-contain for camera
+                    className="rounded-md w-full h-full object-contain relative z-0"
                     playsInline
                     autoPlay
                     muted
@@ -1201,7 +1103,7 @@ const App = () => {
               {/* Left 75% for Camera */}
               <button
                 onClick={handleOpenCamera}
-                className="flex-grow w-3/4 py-3 px-2 bg-green-500 text-white hover:bg-green-600 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-l-lg"
+                className="flex-grow w-3/4 py-3 px-2 bg-blue-600 text-white hover:bg-blue-600 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-l-lg"
               >
                 {/* Corrected Camera SVG */}
                 <svg
@@ -1229,7 +1131,7 @@ const App = () => {
               {/* Right 25% for Upload (Dropdown Icon) */}
               <label
                 htmlFor="select-photo"
-                className="w-1/4 py-3 px-2 bg-green-500 text-white hover:bg-green-600 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-r-lg border-l-2 border-white cursor-pointer"
+                className="w-1/4 py-3 px-2 bg-blue-600 text-white hover:bg-blue-600 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-r-lg border-l-2 border-white cursor-pointer"
               >
                 <svg
                   className="w-4 h-4"
@@ -1278,7 +1180,7 @@ const App = () => {
 
         {/* Error message display */}
         {errorMessage && (
-          <div className="mt-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md text-center max-w-lg mx-auto"> {/* Added max-w-lg mx-auto */}
+          <div className="mt-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md text-center max-w-lg mx-auto">
             {isDebugMode ? (
               <p>{errorMessage}</p>
             ) : (
@@ -1289,17 +1191,50 @@ const App = () => {
 
         {/* Description text display at the very bottom, only visible in debug mode */}
         {isDebugMode && descriptionText && (
-          <div className="mt-8 p-4 bg-gray-50 border border-gray-200 text-gray-700 rounded-md text-left text-sm leading-relaxed max-w-lg mx-auto"> {/* Added max-w-lg mx-auto */}
+          <div className="mt-8 p-4 bg-gray-50 border border-gray-200 text-gray-700 rounded-md text-left text-sm leading-relaxed max-w-lg mx-auto">
             <p className="font-semibold mb-2">Description:</p>
             <p className="whitespace-pre-wrap">{descriptionText}</p>
           </div>
         )}
       </div>
-            {/* Small text at the very bottom */}
-      <div className="mt-8 text-xs text-gray-400 text-center">
-        <p><a href="https://github.com/BrianWeinstein/rpc-dev" target="_blank"><u>About</u></a></p>
-        <br></br>
+      {/* Small text at the very bottom */}
+      <div className="mt-8 text-xs text-gray-400 text-center flex items-center justify-center space-x-2">
+        <p><a href="https://github.com/BrianWeinstein/rpc-dev" target="_blank" className="hover:underline">About</a></p>
+        <p>•</p> {/* Separator */}
+        {/* Debug Mode Toggle Switch */}
+        <div className="flex items-center space-x-1">
+          <span className="text-gray-400">Debug Mode</span>
+          <button
+            onClick={handleToggleDebugMode}
+            className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors duration-200 ease-in-out 
+              ${isDebugMode ? 'bg-blue-500' : 'bg-gray-200'}
+            `}
+          >
+            <span
+              className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform duration-200 ease-in-out
+                ${isDebugMode ? 'translate-x-6' : 'translate-x-1'}
+              `}
+            ></span>
+            <span
+              className={`absolute right-1.5 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+                ${isDebugMode ? 'text-white opacity-0' : 'text-gray-400 opacity-100'}
+              `}
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+            >
+              Off
+            </span>
+            <span
+              className={`absolute left-1.5 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+                ${isDebugMode ? 'text-white opacity-100' : 'text-gray-600 opacity-0'}
+              `}
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+            >
+              On
+            </span>
+          </button>
+        </div>
       </div>
+      <br></br>
     </div>
   );
 };
