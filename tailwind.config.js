@@ -18,7 +18,7 @@ export default {
 
         // Defines the 'sans' font stack to use Comic Sans MS as the primary font,
         // falling back to a generic sans-serif if Comic Sans MS is not available.
-        sans: ['"Comic Sans MS"', 'cursive', 'sans-serif'], // Added 'cursive' as a generic fallback for Comic Sans
+        sans: ['"Comic Sans MS"', 'sans-serif'],
         // Defines the 'serif' font stack to use Times New Roman as the primary font,
         // falling back to a generic serif if Times New Roman is not available.
         serif: ['"Times New Roman"', 'Times', 'serif'], // Changed to Times New Roman
