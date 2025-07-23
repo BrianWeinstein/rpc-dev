@@ -1025,18 +1025,6 @@ const App = () => {
           )}
         </div>
 
-        {/* Retry button (immediately below the photo) */}
-        {errorMessage && lastProcessedImageDataUrl && (
-          <div className="mt-4 text-center">
-            <button
-              onClick={() => handleGenerateImageProcess(lastProcessedImageDataUrl)}
-              className="py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
-            >
-              Back to Enhanced
-            </button>
-          </div>
-        )}
-
         {/* Camera Action Buttons (Capture/Cancel/Switch) - directly below the photo/retry button */}
         {isCameraActive && (
           <div className="mt-4 relative flex flex-col items-center justify-center w-full space-y-4">
@@ -1084,13 +1072,13 @@ const App = () => {
         )}
 
         {/* Action Buttons: Compare/Back Button - appears only after images are generated AND processing is complete */}
-        {!isProcessing && generatedImageUrlStandard && (
+        {!isProcessing && generatedImageUrlStandard && !errorMessage && (
           <div className="mt-6 flex flex-col space-y-3 items-center">
             <button
               onClick={() => setShowSideBySide(!showSideBySide)}
               className="py-2 px-4 text-sm rounded-md font-normal transition duration-200 ease-in-out shadow-md hover:shadow-md w-fit mx-auto"
             >
-              {showSideBySide ? 'Back to Enhanced' : 'Compare'}
+              {showSideBySide ? 'Back' : 'Compare'}
             </button>
           </div>
         )}
@@ -1192,7 +1180,7 @@ const App = () => {
         {/* Description text display at the very bottom, only visible in debug mode */}
         {isDebugMode && descriptionText && (
           <div className="mt-8 p-4 bg-gray-50 border border-gray-200 text-gray-700 rounded-md text-left text-sm leading-relaxed max-w-lg mx-auto">
-            <p className="font-semibold mb-2">Description:</p>
+            {/* <p className="font-semibold mb-2">Description:</p> */}
             <p className="whitespace-pre-wrap">{descriptionText}</p>
           </div>
         )}
