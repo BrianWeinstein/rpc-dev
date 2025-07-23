@@ -299,7 +299,7 @@ const App = () => {
       // Modified generateImage function - now takes no arguments
       const generateImage = async () => {
         const modelId = 'imagen-3.0-generate-002'; // Hardcoded model ID
-        const generatePayload = { instances: { prompt: generatePrompt }, parameters: { "sampleCount": 1} };
+        const generatePayload = { instances: { prompt: generatePrompt }, parameters: { "sampleCount": 1, "aspectRatio": "1:1", "personGeneration": "allow_all", "safetySetting":"block_low_and_above"} }; // https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/imagen-api#parameter_list
         const generateApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:predict?key=${apiKey}`;
         console.log(`Calling Image Generation API (${modelId}):`, generateApiUrl);
 
