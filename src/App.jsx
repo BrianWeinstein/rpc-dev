@@ -1216,7 +1216,7 @@ const App = () => {
               `}
             ></span>
             <span
-              className={`absolute right-1 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+              className={`absolute right-1 text-[9.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
                 ${isDebugMode ? 'text-white opacity-0' : 'text-gray-400 opacity-100'}
               `}
               style={{ top: '50%', transform: 'translateY(-50%)' }}
@@ -1224,7 +1224,7 @@ const App = () => {
               Off
             </span>
             <span
-              className={`absolute left-1.5 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+              className={`absolute left-1.5 text-[9.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
                 ${isDebugMode ? 'text-gray-200 opacity-100' : 'text-gray-400 opacity-0'}
               `}
               style={{ top: '50%', transform: 'translateY(-50%)' }}
