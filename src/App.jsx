@@ -1047,10 +1047,10 @@ const App = () => {
                 onClick={handleCapturePhoto}
                 disabled={!isCaptureReady}
                 className={`w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center transition duration-200 ease-in-out absolute left-1/2 -translate-x-1/2
-                           ${isCaptureReady ? 'border-4 border-black bg-white shadow-md hover:bg-gray-100' : 'border-4 border-gray-600 bg-gray-200 cursor-not-allowed'}`}
+                           ${isCaptureReady ? 'border-4 border-black bg-white shadow-md hover:bg-gray-100' : 'border-4 border-gray-400 bg-gray-200 cursor-not-allowed'}`}
                 style={{ bottom: '16px' }}
               >
-                <div className={`w-12 h-12 rounded-full ${isCaptureReady ? 'bg-black' : 'bg-gray-400'}`}></div> {/* Inner black circle */}
+                <div className={`w-12 h-12 rounded-full transition duration-200 ${isCaptureReady ? 'bg-black' : 'bg-gray-400'}`}></div> {/* Inner black circle */}
               </button>
 
               {/* Switch Camera Button (iOS style) - Smaller, aligned right */}
@@ -1099,11 +1099,11 @@ const App = () => {
         <div className="mt-auto pt-6 flex flex-col justify-center items-center">
           {/* Combined Open Camera / Upload Photo Button */}
           {!isCameraActive && !isProcessing && (
-            <div className="flex rounded-lg shadow-lg overflow-hidden w-full max-w-64">
+            <div className="flex rounded-lg shadow-lg overflow-hidden w-60 max-w-64">
               {/* Left 75% for Camera */}
               <button
                 onClick={handleOpenCamera}
-                className="flex-grow w-3/4 py-3 px-2 bg-blue-600 text-white hover:bg-blue-600 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-l-lg"
+                className="flex-grow w-3/4 py-3 px-2 bg-blue-700 text-white hover:bg-blue-700 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-l-lg"
               >
                 {/* Corrected Camera SVG */}
                 <svg
@@ -1131,7 +1131,7 @@ const App = () => {
               {/* Right 25% for Upload (Dropdown Icon) */}
               <label
                 htmlFor="select-photo"
-                className="w-1/4 py-3 px-2 bg-blue-600 text-white hover:bg-blue-600 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-r-lg border-l-2 border-white cursor-pointer"
+                className="w-1/4 py-3 px-2 bg-blue-700 text-white hover:bg-blue-700 transition duration-200 ease-in-out inline-flex items-center justify-center rounded-r-lg border-l-2 border-white cursor-pointer"
               >
                 <svg
                   className="w-4 h-4"
