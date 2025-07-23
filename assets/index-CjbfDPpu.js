@@ -55,8 +55,8 @@ Error generating stack: `+e.message+`
               ${it?"bg-blue-500":"bg-gray-200"}
             `,children:[D.jsx("span",{className:`inline-block h-2 w-2 transform rounded-full transition-transform duration-200 ease-in-out
                 ${it?"translate-x-6 bg-gray-200":"translate-x-1 bg-white"}
-              `}),D.jsx("span",{className:`absolute right-1 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+              `}),D.jsx("span",{className:`absolute right-1 text-[9.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
                 ${it?"text-white opacity-0":"text-gray-400 opacity-100"}
-              `,style:{top:"50%",transform:"translateY(-50%)"},children:"Off"}),D.jsx("span",{className:`absolute left-1.5 text-[10px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+              `,style:{top:"50%",transform:"translateY(-50%)"},children:"Off"}),D.jsx("span",{className:`absolute left-1.5 text-[9.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
                 ${it?"text-gray-200 opacity-100":"text-gray-400 opacity-0"}
               `,style:{top:"50%",transform:"translateY(-50%)"},children:"On"})]})]})]})]})};Bh.createRoot(document.getElementById("root")).render(D.jsx(gl.StrictMode,{children:D.jsx(Gh,{})}));
