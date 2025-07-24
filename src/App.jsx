@@ -1111,7 +1111,7 @@ const App = () => {
         )}
 
         {/* Container for initial buttons (Open Camera/Upload) and Progress Bar */}
-        <div className="mt-0 pt-0 flex flex-col justify-center items-center">
+        <div className="mt-auto pt-4 flex flex-col justify-center items-center">
           {/* Combined Open Camera / Upload Photo Button */}
           {!isCameraActive && !isProcessing && (
             <div className="flex rounded-lg shadow-lg overflow-hidden w-60 max-w-64">
