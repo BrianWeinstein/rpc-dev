@@ -951,7 +951,7 @@ const App = () => {
 
 
   return (
-    <div className="min-h-dvh flex flex-col items-center font-sans bg-white pt-3"> {/* Reduced pt-8 to pt-4 */}
+    <div className="min-h-dvh flex flex-col items-center font-sans bg-white pt-5"> {/* Reduced pt-8 to pt-4 */}
       {/* Outer container for the entire app, now conditionally adjusts max-width and padding */}
       <div className={`w-full mx-auto text-center flex-grow
         ${showSideBySide ? 'px-2' : 'max-w-lg px-4'}
@@ -970,7 +970,7 @@ const App = () => {
         </div>
 
         {/* Unified Image Display Area */}
-        <div className={`mt-2 relative flex flex-col justify-center items-center overflow-hidden mx-auto rounded-md  border-gray-000
+        <div className={`mt-4 relative flex flex-col justify-center items-center overflow-hidden mx-auto rounded-md  border-gray-000
           w-[298px] h-[426px] bg-gray-000 {/* Fixed dimensions for 7:10 ratio */}
         `}
         style={showSideBySide ? { width: 'min(95vw, 550px)', height: '426px' } : {}}
