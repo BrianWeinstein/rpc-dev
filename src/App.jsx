@@ -1111,7 +1111,7 @@ const App = () => {
         )}
 
         {/* Container for initial buttons (Open Camera/Upload) and Progress Bar */}
-        <div className="mt-auto pt-4 flex flex-col justify-center items-center">
+        <div className="mt-0 pt-0 flex flex-col justify-center items-center">
           {/* Combined Open Camera / Upload Photo Button */}
           {!isCameraActive && !isProcessing && (
             <div className="flex rounded-lg shadow-lg overflow-hidden w-60 max-w-64">
@@ -1213,7 +1213,7 @@ const App = () => {
         )}
       </div>
       {/* Small text at the very bottom */}
-      <div className="mt-4 mb-1 text-[9.5px] text-gray-400 text-center flex items-center justify-center space-x-2"> {/* Reduced mt-8 to mt-4, mb-2 to mb-1 */}
+      <div className="mt-2 mb-1 text-[9.5px] text-gray-400 text-center flex items-center justify-center space-x-2"> {/* Reduced mt-8 to mt-4, mb-2 to mb-1 */}
         <p><a href="https://github.com/BrianWeinstein/rpc-dev" target="_blank" className="hover:underline">About</a></p>
         <p>•</p> {/* Separator */}
         {/* Debug Mode Toggle Switch */}
