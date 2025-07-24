@@ -1202,7 +1202,7 @@ const App = () => {
         )}
       </div>
       {/* Small text at the very bottom */}
-      <div className="mt-4 mb-1 text-xs text-gray-400 text-center flex items-center justify-center space-x-2"> {/* Reduced mt-8 to mt-4, mb-2 to mb-1 */}
+      <div className="mt-4 mb-1 text-[9.5px] text-gray-400 text-center flex items-center justify-center space-x-2"> {/* Reduced mt-8 to mt-4, mb-2 to mb-1 */}
         <p><a href="https://github.com/BrianWeinstein/rpc-dev" target="_blank" className="hover:underline">About</a></p>
         <p>•</p> {/* Separator */}
         {/* Debug Mode Toggle Switch */}
@@ -1210,17 +1210,17 @@ const App = () => {
           <span className="text-gray-400">Debug Mode</span>
           <button
             onClick={handleToggleDebugMode}
-            className={`relative inline-flex h-4 w-9 items-center rounded-full transition-colors duration-200 ease-in-out 
-              ${isDebugMode ? 'bg-blue-500' : 'bg-gray-100'}
+            className={`relative inline-flex h-4 w-9 items-center rounded-full transition-colors duration-200 ease-in-out border border-gray-300
+              ${isDebugMode ? 'bg-gray-100' : 'bg-gray-100'}
             `}
           >
             <span
-              className={`inline-block h-2 w-2 transform rounded-full transition-transform duration-200 ease-in-out
-                ${isDebugMode ? 'translate-x-6 bg-gray-100' : 'translate-x-1 bg-white'}
+              className={`inline-block h-2 w-2 transform rounded-full transition-transform duration-200 ease-in-out shadow-md
+                ${isDebugMode ? 'translate-x-[22px] bg-white' : 'translate-x-[4px] bg-white'}
               `}
             ></span>
             <span
-              className={`absolute right-1 text-[9.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+              className={`absolute right-1 text-[8.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
                 ${isDebugMode ? 'text-white opacity-0' : 'text-gray-400 opacity-100'}
               `}
               style={{ top: '50%', transform: 'translateY(-50%)' }}
@@ -1228,8 +1228,8 @@ const App = () => {
               Off
             </span>
             <span
-              className={`absolute left-1.5 text-[9.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
-                ${isDebugMode ? 'text-gray-200 opacity-100' : 'text-gray-400 opacity-0'}
+              className={`absolute left-1.5 text-[8.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+                ${isDebugMode ? 'text-gray-400 opacity-100' : 'text-gray-400 opacity-0'}
               `}
               style={{ top: '50%', transform: 'translateY(-50%)' }}
             >
