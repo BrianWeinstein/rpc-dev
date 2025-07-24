@@ -940,13 +940,16 @@ const App = () => {
 
 
   return (
-    <div className="min-h-dvh flex flex-col items-center font-sans bg-white pt-8">
+    <div className="min-h-dvh flex flex-col items-center font-sans bg-white pt-4"> {/* Reduced pt-8 to pt-4 */}
       {/* Outer container for the entire app, now conditionally adjusts max-width and padding */}
       <div className={`w-full mx-auto text-center flex-grow
         ${showSideBySide ? 'px-2' : 'max-w-lg px-4'}
       `}>
         {/* Header with Logo */}
-        <div className="flex items-center justify-center mb-6">
+        <div
+          className="flex items-center justify-center mb-4 cursor-pointer" /* Reduced mb-6 to mb-4 */
+          onClick={handleCancelProcess} // Add onClick handler here
+        >
           <img
             src="https://brianweinstein.github.io/rpc-dev/favicon.png"
             alt="App Logo"
@@ -1040,7 +1043,7 @@ const App = () => {
 
         {/* Camera Action Buttons (Capture/Cancel/Switch) - directly below the photo/retry button */}
         {isCameraActive && (
-          <div className="mt-4 relative flex flex-col items-center justify-center w-full space-y-4">
+          <div className="mt-2 relative flex flex-col items-center justify-center w-full space-y-2"> {/* Reduced mt-4 to mt-2, space-y-4 to space-y-2 */}
             {/* Container for Capture and Switch buttons, directly below the video feed */}
             <div className="relative w-full flex items-center justify-center" style={{ height: '96px' }}>
               {/* Capture Photo Button (iOS style) - Centered horizontally */}
@@ -1077,7 +1080,7 @@ const App = () => {
             {/* Cancel Camera Button (on its own line) */}
             <button
               onClick={stopCamera}
-                className="mt-4 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-300 text-gray-800 hover:bg-gray-400"
+                className="mt-2 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-300 text-gray-800 hover:bg-gray-400" /* Reduced mt-4 to mt-2 */
             >
               Close Camera
             </button>
@@ -1086,7 +1089,7 @@ const App = () => {
 
         {/* Action Buttons: Compare/Back Button - appears only after images are generated AND processing is complete */}
         {!isProcessing && generatedImageUrlStandard && !errorMessage && (
-          <div className="mt-6 flex flex-col space-y-3 items-center">
+          <div className="mt-4 flex flex-col space-y-3 items-center"> {/* Reduced mt-6 to mt-4 */}
             <button
               onClick={() => setShowSideBySide(!showSideBySide)}
               className="py-2 px-4 text-sm rounded-md font-normal transition duration-200 ease-in-out shadow-md hover:shadow-md w-fit mx-auto"
@@ -1097,7 +1100,7 @@ const App = () => {
         )}
 
         {/* Container for initial buttons (Open Camera/Upload) and Progress Bar */}
-        <div className="mt-auto pt-6 flex flex-col justify-center items-center">
+        <div className="mt-auto pt-4 flex flex-col justify-center items-center"> {/* Reduced pt-6 to pt-4 */}
           {/* Combined Open Camera / Upload Photo Button */}
           {!isCameraActive && !isProcessing && (
             <div className="flex rounded-lg shadow-lg overflow-hidden w-60 max-w-64">
@@ -1161,7 +1164,7 @@ const App = () => {
 
           {/* Progress bar overlay - always visible when processing */}
           {isProcessing && (
-            <div className="mt-4 text-center">
+            <div className="mt-2 text-center"> {/* Reduced mt-4 to mt-2 */}
               <div className="w-[298px] bg-gray-200 rounded-md h-2.5 mx-auto">
                 <div
                   className="bg-blue-500 h-2.5 rounded-md transition-all duration-50 ease-linear"
@@ -1171,7 +1174,7 @@ const App = () => {
               {/* "Cancel Photo" button */}
               <button
                 onClick={handleCancelProcess}
-                className="mt-4 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-300 text-gray-800 hover:bg-gray-400"
+                className="mt-2 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-300 text-gray-800 hover:bg-gray-400" /* Reduced mt-4 to mt-2 */
               >
                 Cancel
               </button>
@@ -1181,7 +1184,7 @@ const App = () => {
 
         {/* Error message display */}
         {errorMessage && (
-          <div className="mt-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md text-center max-w-lg mx-auto">
+          <div className="mt-2 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md text-center max-w-lg mx-auto"> {/* Reduced mt-4 to mt-2 */}
             {isDebugMode ? (
               <p>{errorMessage}</p>
             ) : (
@@ -1192,14 +1195,14 @@ const App = () => {
 
         {/* Description text display at the very bottom, only visible in debug mode */}
         {isDebugMode && descriptionText && (
-          <div className="mt-8 p-4 bg-gray-50 border border-gray-200 text-gray-700 rounded-md text-left text-sm leading-relaxed max-w-lg mx-auto">
+          <div className="mt-4 p-4 bg-gray-50 border border-gray-200 text-gray-700 rounded-md text-left text-sm leading-relaxed max-w-lg mx-auto"> {/* Reduced mt-8 to mt-4 */}
             {/* <p className="font-semibold mb-2">Description:</p> */}
             <p className="whitespace-pre-wrap">{descriptionText}</p>
           </div>
         )}
       </div>
       {/* Small text at the very bottom */}
-      <div className="mt-8 mb-2 text-xs text-gray-400 text-center flex items-center justify-center space-x-2">
+      <div className="mt-4 mb-1 text-xs text-gray-400 text-center flex items-center justify-center space-x-2"> {/* Reduced mt-8 to mt-4, mb-2 to mb-1 */}
         <p><a href="https://github.com/BrianWeinstein/rpc-dev" target="_blank" className="hover:underline">About</a></p>
         <p>•</p> {/* Separator */}
         {/* Debug Mode Toggle Switch */}
