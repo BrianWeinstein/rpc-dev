@@ -940,14 +940,14 @@ const App = () => {
 
 
   return (
-    <div className="min-h-dvh flex flex-col items-center font-sans bg-white pt-4"> {/* Reduced pt-8 to pt-4 */}
+    <div className="min-h-dvh flex flex-col items-center font-sans bg-white pt-3"> {/* Reduced pt-8 to pt-4 */}
       {/* Outer container for the entire app, now conditionally adjusts max-width and padding */}
       <div className={`w-full mx-auto text-center flex-grow
         ${showSideBySide ? 'px-2' : 'max-w-lg px-4'}
       `}>
         {/* Header with Logo */}
         <div
-          className="flex items-center justify-center mb-4 cursor-pointer" /* Reduced mb-6 to mb-4 */
+          className="flex items-center justify-center mb-0 cursor-pointer" /* Reduced mb-6 to mb-4 */
           onClick={handleCancelProcess} // Add onClick handler here
         >
           <img
