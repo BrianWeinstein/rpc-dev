@@ -1089,7 +1089,7 @@ const App = () => {
           <div className="mt-6 flex flex-col space-y-3 items-center">
             <button
               onClick={() => setShowSideBySide(!showSideBySide)}
-              className="py-2 px-4 text-sm rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md w-fit mx-auto"
+              className="py-2 px-4 text-sm rounded-md font-normal transition duration-200 ease-in-out shadow-md hover:shadow-md w-fit mx-auto"
             >
               {showSideBySide ? 'Back' : 'Compare'}
             </button>
