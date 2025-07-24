@@ -67,6 +67,8 @@ const App = () => {
   const randomSlowDownPointRef = useRef(null);
   const preFinishProgressRef = useRef(0);
 
+  // Define the target aspect ratio (width / height)
+  const TARGET_ASPECT_RATIO = 0.7; // This is 7:10 (width:height)
 
   // Function to draw the loading effect on the canvas (combining pixelation, color quantization, and scanlines)
   // Now accepts 'sourceElement' which can be an Image or Video
@@ -104,30 +106,29 @@ const App = () => {
     // Ensure source has valid dimensions
     if (sourceWidth === 0 || sourceHeight === 0) return;
 
-    // Calculate source rectangle to crop the center 3:4
-    const targetAspectRatio = 0.7022082939; //3 / 4;
+    // Calculate source rectangle to crop the center TARGET_ASPECT_RATIO
     let sx, sy, sWidth, sHeight;
 
     const sourceAspectRatio = sourceWidth / sourceHeight;
 
-    if (sourceAspectRatio > targetAspectRatio) { // Source is wider than 3:4 (e.g., 16:9 video)
+    if (sourceAspectRatio > TARGET_ASPECT_RATIO) { // Source is wider than TARGET_ASPECT_RATIO
       sHeight = sourceHeight;
-      sWidth = sourceHeight * targetAspectRatio;
+      sWidth = sourceHeight * TARGET_ASPECT_RATIO;
       sx = (sourceWidth - sWidth) / 2;
       sy = 0;
-    } else { // Source is taller or 3:4 (e.g., 9:16 video or square image)
+    } else { // Source is taller or TARGET_ASPECT_RATIO
       sWidth = sourceWidth;
-      sHeight = sourceWidth / targetAspectRatio;
+      sHeight = sourceWidth / TARGET_ASPECT_RATIO;
       sx = 0;
       sy = (sourceHeight - sHeight) / 2;
     }
 
 
-    // tempCanvas will now be 3:4, representing the cropped source
+    // tempCanvas will now be TARGET_ASPECT_RATIO, representing the cropped source
     const tempCanvas = document.createElement('canvas');
     const tempCtx = tempCanvas.getContext('2d');
     const desiredTempWidth = 1024; // Arbitrary high resolution for pixel sampling
-    const desiredTempHeight = Math.round((1/targetAspectRatio) * desiredTempWidth);
+    const desiredTempHeight = Math.round((1/TARGET_ASPECT_RATIO) * desiredTempWidth);
     tempCanvas.width = desiredTempWidth;
     tempCanvas.height = desiredTempHeight;
 
@@ -303,7 +304,7 @@ const App = () => {
       // Modified generateImage function - now takes no arguments
       const generateImage = async () => {
         const modelId = 'imagen-3.0-generate-002'; // Hardcoded model ID
-        const generatePayload = { instances: { prompt: generatePrompt }, parameters: { "sampleCount": 1, "aspectRatio": "3:4", "personGeneration": "allow_all", "safetySetting":"block_low_and_above"} }; // https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/imagen-api#parameter_list
+        const generatePayload = { instances: { prompt: generatePrompt }, parameters: { "sampleCount": 1, "aspectRatio": "3:4", "personGeneration": "allow_all", "safetySetting":"block_low_and_above"} }; // Using "7:10" for consistency
         const generateApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:predict?key=${apiKey}`;
         console.log(`Calling Image Generation API (${modelId}):`, generateApiUrl);
 
@@ -759,37 +760,35 @@ const App = () => {
       return;
     }
 
-    // Define target output dimensions for 3:4 aspect ratio
-    const targetAspectRatio = 0.7022082939; //3 / 4;
+    // Define target output dimensions for 7:10 aspect ratio
     const desiredOutputWidth = 1024;
-    const desiredOutputHeight = Math.round((1/targetAspectRatio) * desiredOutputWidth); // Approximately 1365
+    const desiredOutputHeight = Math.round((1 / TARGET_ASPECT_RATIO) * desiredOutputWidth); // 1024 * (10/7) = 1462.85 -> 1463
 
-    // Create a temporary canvas to draw the video frame at the desired output resolution (3:4)
+    // Create a temporary canvas to draw the video frame at the desired output resolution (7:10)
     const captureCanvas = document.createElement('canvas');
     const captureCtx = captureCanvas.getContext('2d');
 
     captureCanvas.width = desiredOutputWidth;
     captureCanvas.height = desiredOutputHeight;
 
-    // Calculate source rectangle to crop the center 3:4 from the video feed
-    // const targetAspectRatio = 0.7022082939; //3 / 4;
+    // Calculate source rectangle to crop the center 7:10 from the video feed
     let sx, sy, sWidth, sHeight;
 
     const videoAspectRatio = originalVideoWidth / originalVideoHeight;
 
-    if (videoAspectRatio > targetAspectRatio) { // Video is wider than 3:4 (e.g., 16:9)
+    if (videoAspectRatio > TARGET_ASPECT_RATIO) { // Video is wider than 7:10
       sHeight = originalVideoHeight;
-      sWidth = originalVideoHeight * targetAspectRatio;
+      sWidth = originalVideoHeight * TARGET_ASPECT_RATIO;
       sx = (originalVideoWidth - sWidth) / 2;
       sy = 0;
-    } else { // Video is taller or 3:4 (e.g., 9:16 or 3:4)
+    } else { // Video is taller or 7:10
       sWidth = originalVideoWidth;
-      sHeight = originalVideoWidth / targetAspectRatio;
+      sHeight = originalVideoWidth / TARGET_ASPECT_RATIO;
       sx = 0;
       sy = (originalVideoHeight - sHeight) / 2;
     }
 
-    // Draw the cropped section of the video onto the capture canvas, scaling it to 3:4
+    // Draw the cropped section of the video onto the capture canvas, scaling it to 7:10
     captureCtx.drawImage(
       video,
       sx,         // sx: x-coordinate of the top-left corner of the source rectangle
@@ -803,7 +802,7 @@ const App = () => {
     );
 
     const croppedDataUrl = captureCanvas.toDataURL('image/png');
-    console.log(`Captured video frame, cropped and scaled to 3:4: ${desiredOutputWidth}x${desiredOutputHeight}`);
+    console.log(`Captured video frame, cropped and scaled to 7:10: ${desiredOutputWidth}x${desiredOutputHeight}`);
 
     // Set the original image data URL for display/comparison
     setOriginalImageDataUrl(croppedDataUrl);
@@ -856,36 +855,35 @@ const App = () => {
           const originalWidth = originalLoadedImage.width;
           const originalHeight = originalLoadedImage.height;
 
-          // Define target output dimensions for 3:4 aspect ratio
+          // Define target output dimensions for 7:10 aspect ratio
           const desiredOutputWidth = 1024;
-          const desiredOutputHeight = Math.round((1/targetAspectRatio) * desiredOutputWidth); // Approximately 1365
+          const desiredOutputHeight = Math.round((1 / TARGET_ASPECT_RATIO) * desiredOutputWidth); // 1024 * (10/7) = 1462.85 -> 1463
 
-          // Create a temporary canvas for cropping to 3:4
+          // Create a temporary canvas for cropping to 7:10
           const croppedCanvas = document.createElement('canvas');
           const croppedCtx = croppedCanvas.getContext('2d');
 
           croppedCanvas.width = desiredOutputWidth;
           croppedCanvas.height = desiredOutputHeight;
 
-          // Calculate source rectangle to crop the center 3:4 from the original image
-          const targetAspectRatio = 7022082939; //3 / 4;
+          // Calculate source rectangle to crop the center 7:10 from the original image
           let sx, sy, sWidth, sHeight;
 
           const imageAspectRatio = originalWidth / originalHeight;
 
-          if (imageAspectRatio > targetAspectRatio) { // Image is wider than 3:4
+          if (imageAspectRatio > TARGET_ASPECT_RATIO) { // Image is wider than 7:10
               sHeight = originalHeight;
-              sWidth = originalHeight * targetAspectRatio;
+              sWidth = originalHeight * TARGET_ASPECT_RATIO;
               sx = (originalWidth - sWidth) / 2;
               sy = 0;
-          } else { // Image is taller or 3:4
+          } else { // Image is taller or 7:10
               sWidth = originalWidth;
-              sHeight = originalWidth / targetAspectRatio;
+              sHeight = originalWidth / TARGET_ASPECT_RATIO;
               sx = 0;
               sy = (originalHeight - sHeight) / 2;
           }
 
-          // Draw the cropped section of the original image onto the new canvas, scaling it to 3:4
+          // Draw the cropped section of the original image onto the new canvas, scaling it to 7:10
           croppedCtx.drawImage(
               originalLoadedImage,
               sx,         // sx
@@ -899,7 +897,7 @@ const App = () => {
           );
 
           const croppedDataUrl = croppedCanvas.toDataURL('image/png');
-          console.log(`Original image cropped and scaled to 3:4 dimensions: ${desiredOutputWidth}x${desiredOutputHeight}`);
+          console.log(`Original image cropped and scaled to 7:10 dimensions: ${desiredOutputWidth}x${desiredOutputHeight}`);
 
           // Store the cropped image data URL for side-by-side comparison
           setOriginalImageDataUrl(croppedDataUrl);
@@ -942,7 +940,7 @@ const App = () => {
 
 
   return (
-    <div className="min-h-dvh flex flex-col items-center font-sans bg-white pt-16">
+    <div className="min-h-dvh flex flex-col items-center font-sans bg-white pt-8">
       {/* Outer container for the entire app, now conditionally adjusts max-width and padding */}
       <div className={`w-full mx-auto text-center flex-grow
         ${showSideBySide ? 'px-2' : 'max-w-lg px-4'}
@@ -954,36 +952,36 @@ const App = () => {
             alt="App Logo"
             className="w-8 h-8 mr-2 object-contain"
           />
-          <h1 className="text-xl font-normal text-gray-900">Real Photo Camera 3100</h1>
+          <h1 className="text-xl font-normal text-gray-900">Camera 3000</h1>
         </div>
 
         {/* Unified Image Display Area */}
-        <div className={`mt-6 relative flex flex-col justify-center items-center overflow-hidden mx-auto rounded-md
-          ${showSideBySide ? 'h-[320px]' : 'w-[320px] h-[426px] bg-gray-100'} {/* Changed height to 426px for 3:4 ratio */}
+        <div className={`mt-6 relative flex flex-col justify-center items-center overflow-hidden mx-auto rounded-md  border-gray-000
+          w-[298px] h-[426px] bg-gray-000 {/* Fixed dimensions for 7:10 ratio */}
         `}
-        style={showSideBySide ? { width: 'min(95vw, 550px)' } : {}}
+        style={showSideBySide ? { width: 'min(95vw, 550px)', height: '426px' } : {}}
         >
           {showSideBySide ? (
             // Side-by-Side Comparison View for 2 images (Original and Standard Generated)
-            <div className="flex flex-row gap-1.5 justify-center items-center w-full h-auto">
+            <div className="flex flex-row gap-1.5 justify-center items-center w-full h-full"> {/* Changed h-auto to h-full */}
               {originalImageDataUrl && (
                 <div className="flex flex-col justify-center items-center h-full w-1/2 p-0">
                   <img
                     src={originalImageDataUrl}
-                    alt="Original Photo"
-                    className="max-w-full max-h-full object-contain rounded-md border border-gray-300"
+                    className="max-w-full max-h-full object-contain rounded-md border border-gray-200"
+                    alt="Boring old camera photo"
                   />
-                  <p className="text-xs mt-1 text-gray-600">Original</p>
+                  <p className="text-xs mt-1 text-gray-600">Boring old camera</p>
                 </div>
               )}
               {generatedImageUrlStandard && (
                 <div className="flex flex-col justify-center items-center h-full w-1/2 p-0">
                   <img
                     src={generatedImageUrlStandard}
-                    alt="Enhanced Photo (Standard)"
-                    className="max-w-full max-h-full object-contain rounded-md border border-gray-300"
+                    className="max-w-full max-h-full object-contain rounded-md border border-gray-200"
+                    alt="Camera 3000 photo"
                   />
-                  <p className="text-xs mt-1 text-gray-600">Enhanced</p>
+                  <p className="text-xs mt-1 text-gray-600">Camera 3000</p>
                 </div>
               )}
             </div>
@@ -1032,13 +1030,15 @@ const App = () => {
               {!isCameraActive && !isProcessing && !generatedImageUrlStandard && originalImageDataUrl && (
                 <img
                     src={originalImageDataUrl}
-                    alt="Original Photo"
                     className="w-full h-full object-contain mx-auto rounded-md"
+                    alt="Boring old camera photo"
                 />
               )}
             </>
           )}
         </div>
+
+        )}
 
         {/* Camera Action Buttons (Capture/Cancel/Switch) - directly below the photo/retry button */}
         {isCameraActive && (
@@ -1091,7 +1091,7 @@ const App = () => {
           <div className="mt-6 flex flex-col space-y-3 items-center">
             <button
               onClick={() => setShowSideBySide(!showSideBySide)}
-              className="py-2 px-4 text-sm rounded-md font-normal transition duration-200 ease-in-out shadow-md hover:shadow-md w-fit mx-auto"
+              className="py-2 px-4 text-sm rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md w-fit mx-auto"
             >
               {showSideBySide ? 'Back' : 'Compare'}
             </button>
@@ -1164,7 +1164,7 @@ const App = () => {
           {/* Progress bar overlay - always visible when processing */}
           {isProcessing && (
             <div className="mt-4 text-center">
-              <div className="w-[320px] bg-gray-200 rounded-md h-2.5 mx-auto">
+              <div className="w-[298px] bg-gray-200 rounded-md h-2.5 mx-auto">
                 <div
                   className="bg-blue-500 h-2.5 rounded-md transition-all duration-50 ease-linear"
                   style={{ width: `${progress}%` }}
