@@ -959,7 +959,7 @@ const App = () => {
         </div>
 
         {/* Unified Image Display Area */}
-        <div className={`mt-6 relative flex flex-col justify-center items-center overflow-hidden mx-auto rounded-md  border-gray-000
+        <div className={`mt-2 relative flex flex-col justify-center items-center overflow-hidden mx-auto rounded-md  border-gray-000
           w-[298px] h-[426px] bg-gray-000 {/* Fixed dimensions for 7:10 ratio */}
         `}
         style={showSideBySide ? { width: 'min(95vw, 550px)', height: '426px' } : {}}
@@ -1043,7 +1043,7 @@ const App = () => {
 
         {/* Camera Action Buttons (Capture/Cancel/Switch) - directly below the photo/retry button */}
         {isCameraActive && (
-          <div className="mt-2 relative flex flex-col items-center justify-center w-full space-y-2"> {/* Reduced mt-4 to mt-2, space-y-4 to space-y-2 */}
+          <div className="mt-0 relative flex flex-col items-center justify-center w-full space-y-0"> {/* Reduced mt-4 to mt-2, space-y-4 to space-y-2 */}
             {/* Container for Capture and Switch buttons, directly below the video feed */}
             <div className="relative w-full flex items-center justify-center" style={{ height: '96px' }}>
               {/* Capture Photo Button (iOS style) - Centered horizontally */}
@@ -1051,7 +1051,7 @@ const App = () => {
                 onClick={handleCapturePhoto}
                 disabled={!isCaptureReady}
                 className={`w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center transition duration-200 ease-in-out absolute left-1/2 -translate-x-1/2
-                           ${isCaptureReady ? 'border-4 border-black bg-white shadow-md hover:bg-gray-100' : 'border-4 border-gray-400 bg-gray-200 cursor-not-allowed'}`}
+                           ${isCaptureReady ? 'border-4 border-black bg-white shadow-md hover:bg-gray-100' : 'border-4 border-gray-400 bg-gray-100 cursor-not-allowed'}`}
                 style={{ bottom: '16px' }}
               >
                 <div className={`w-12 h-12 rounded-full transition duration-200 ${isCaptureReady ? 'bg-black' : 'bg-gray-400'}`}></div> {/* Inner black circle */}
@@ -1080,7 +1080,7 @@ const App = () => {
             {/* Cancel Camera Button (on its own line) */}
             <button
               onClick={stopCamera}
-                className="mt-2 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-300 text-gray-800 hover:bg-gray-400" /* Reduced mt-4 to mt-2 */
+                className="mt-0 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-100 text-gray-800 text-xs hover:bg-gray-400"  /* Reduced mt-4 to mt-2 */
             >
               Close Camera
             </button>
@@ -1092,7 +1092,7 @@ const App = () => {
           <div className="mt-4 flex flex-col space-y-3 items-center"> {/* Reduced mt-6 to mt-4 */}
             <button
               onClick={() => setShowSideBySide(!showSideBySide)}
-              className="py-2 px-4 text-sm rounded-md font-normal transition duration-200 ease-in-out shadow-md hover:shadow-md w-fit mx-auto"
+              className="py-2 px-4 text-xs rounded-md font-normal transition duration-200 ease-in-out shadow-md hover:shadow-md w-fit mx-auto"
             >
               {showSideBySide ? 'Back' : 'Compare'}
             </button>
@@ -1165,7 +1165,7 @@ const App = () => {
           {/* Progress bar overlay - always visible when processing */}
           {isProcessing && (
             <div className="mt-2 text-center"> {/* Reduced mt-4 to mt-2 */}
-              <div className="w-[298px] bg-gray-200 rounded-md h-2.5 mx-auto">
+              <div className="w-[298px] bg-gray-100 rounded-md h-2.5 mx-auto">
                 <div
                   className="bg-blue-500 h-2.5 rounded-md transition-all duration-50 ease-linear"
                   style={{ width: `${progress}%` }}
@@ -1174,7 +1174,7 @@ const App = () => {
               {/* "Cancel Photo" button */}
               <button
                 onClick={handleCancelProcess}
-                className="mt-2 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-300 text-gray-800 hover:bg-gray-400" /* Reduced mt-4 to mt-2 */
+                className="mt-2 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-300 text-gray-800 text-xs hover:bg-gray-400" /* Reduced mt-4 to mt-2 */
               >
                 Cancel
               </button>
@@ -1211,12 +1211,12 @@ const App = () => {
           <button
             onClick={handleToggleDebugMode}
             className={`relative inline-flex h-4 w-9 items-center rounded-full transition-colors duration-200 ease-in-out 
-              ${isDebugMode ? 'bg-blue-500' : 'bg-gray-200'}
+              ${isDebugMode ? 'bg-blue-500' : 'bg-gray-100'}
             `}
           >
             <span
               className={`inline-block h-2 w-2 transform rounded-full transition-transform duration-200 ease-in-out
-                ${isDebugMode ? 'translate-x-6 bg-gray-200' : 'translate-x-1 bg-white'}
+                ${isDebugMode ? 'translate-x-6 bg-gray-100' : 'translate-x-1 bg-white'}
               `}
             ></span>
             <span
