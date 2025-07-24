@@ -1214,8 +1214,8 @@ const App = () => {
       </div>
       {/* Small text at the very bottom */}
       <div className="mt-2 mb-1 text-[9.5px] text-gray-400 text-center flex items-center justify-center space-x-2"> {/* Reduced mt-8 to mt-4, mb-2 to mb-1 */}
-        <p><a href="https://github.com/BrianWeinstein/rpc-dev" target="_blank" className="hover:underline">About</a></p>
-        <p>•</p> {/* Separator */}
+        {/* <p><a href="https://github.com/BrianWeinstein/rpc-dev" target="_blank" className="hover:underline">About</a></p> */}
+        {/* <p>•</p> */}
         {/* Debug Mode Toggle Switch */}
         <div className="flex items-center space-x-1">
           <span className="text-gray-400">Debug</span>
