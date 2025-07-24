@@ -1038,8 +1038,6 @@ const App = () => {
           )}
         </div>
 
-        )}
-
         {/* Camera Action Buttons (Capture/Cancel/Switch) - directly below the photo/retry button */}
         {isCameraActive && (
           <div className="mt-4 relative flex flex-col items-center justify-center w-full space-y-4">
