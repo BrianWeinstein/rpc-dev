@@ -44,6 +44,8 @@ const App = () => {
 
   // Debug mode state: default to false upon load
   const [isDebugMode, setIsDebugMode] = useState(false);
+  // New state for Compare Mode toggle
+  const [isCompareModeEnabled, setIsCompareModeEnabled] = useState(true);
 
 
   // Refs for canvas and the loaded original image
@@ -933,9 +935,18 @@ const App = () => {
     };
   }, []); // Run only once on mount and unmount
 
-  // New function to toggle debug mode
+  // Function to toggle debug mode
   const handleToggleDebugMode = () => {
     setIsDebugMode(prevMode => !prevMode);
+  };
+
+  // Function to toggle compare mode
+  const handleToggleCompareMode = () => {
+    setIsCompareModeEnabled(prevMode => !prevMode);
+    // If compare mode is turned off, also hide side-by-side view
+    if (isCompareModeEnabled) {
+      setShowSideBySide(false);
+    }
   };
 
 
@@ -1080,7 +1091,7 @@ const App = () => {
             {/* Cancel Camera Button (on its own line) */}
             <button
               onClick={stopCamera}
-                className="mt-0 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-100 text-gray-800 text-xs hover:bg-gray-400"  /* Reduced mt-4 to mt-2 */
+                className="mt-0 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-100 text-gray-800 text-xs hover:bg-gray-400"
             >
               Close Camera
             </button>
@@ -1088,8 +1099,8 @@ const App = () => {
         )}
 
         {/* Action Buttons: Compare/Back Button - appears only after images are generated AND processing is complete */}
-        {!isProcessing && generatedImageUrlStandard && !errorMessage && (
-          <div className="mt-4 flex flex-col space-y-3 items-center"> {/* Reduced mt-6 to mt-4 */}
+        {!isProcessing && generatedImageUrlStandard && !errorMessage && isCompareModeEnabled && ( // Conditionally render based on isCompareModeEnabled
+          <div className="mt-4 flex flex-col space-y-3 items-center">
             <button
               onClick={() => setShowSideBySide(!showSideBySide)}
               className="py-2 px-4 text-xs rounded-md font-normal transition duration-200 ease-in-out shadow-md hover:shadow-md w-fit mx-auto"
@@ -1100,7 +1111,7 @@ const App = () => {
         )}
 
         {/* Container for initial buttons (Open Camera/Upload) and Progress Bar */}
-        <div className="mt-auto pt-4 flex flex-col justify-center items-center"> {/* Reduced pt-6 to pt-4 */}
+        <div className="mt-auto pt-4 flex flex-col justify-center items-center">
           {/* Combined Open Camera / Upload Photo Button */}
           {!isCameraActive && !isProcessing && (
             <div className="flex rounded-lg shadow-lg overflow-hidden w-60 max-w-64">
@@ -1164,7 +1175,7 @@ const App = () => {
 
           {/* Progress bar overlay - always visible when processing */}
           {isProcessing && (
-            <div className="mt-2 text-center"> {/* Reduced mt-4 to mt-2 */}
+            <div className="mt-2 text-center">
               <div className="w-[298px] bg-gray-100 rounded-md h-2.5 mx-auto">
                 <div
                   className="bg-blue-500 h-2.5 rounded-md transition-all duration-50 ease-linear"
@@ -1174,7 +1185,7 @@ const App = () => {
               {/* "Cancel Photo" button */}
               <button
                 onClick={handleCancelProcess}
-                className="mt-2 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-300 text-gray-800 text-xs hover:bg-gray-400" /* Reduced mt-4 to mt-2 */
+                className="mt-2 py-2 px-4 rounded-md font-normal transition duration-200 ease-in-out shadow-sm hover:shadow-md bg-gray-300 text-gray-800 text-xs hover:bg-gray-400"
               >
                 Cancel
               </button>
@@ -1184,7 +1195,7 @@ const App = () => {
 
         {/* Error message display */}
         {errorMessage && (
-          <div className="mt-2 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md text-center max-w-lg mx-auto"> {/* Reduced mt-4 to mt-2 */}
+          <div className="mt-2 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md text-center max-w-lg mx-auto">
             {isDebugMode ? (
               <p>{errorMessage}</p>
             ) : (
@@ -1195,7 +1206,7 @@ const App = () => {
 
         {/* Description text display at the very bottom, only visible in debug mode */}
         {isDebugMode && descriptionText && (
-          <div className="mt-4 p-4 bg-gray-50 border border-gray-200 text-gray-700 rounded-md text-left text-sm leading-relaxed max-w-lg mx-auto"> {/* Reduced mt-8 to mt-4 */}
+          <div className="mt-4 p-4 bg-gray-50 border border-gray-200 text-gray-700 rounded-md text-left text-sm leading-relaxed max-w-lg mx-auto">
             {/* <p className="font-semibold mb-2">Description:</p> */}
             <p className="whitespace-pre-wrap">{descriptionText}</p>
           </div>
@@ -1207,15 +1218,15 @@ const App = () => {
         <p>•</p> {/* Separator */}
         {/* Debug Mode Toggle Switch */}
         <div className="flex items-center space-x-1">
-          <span className="text-gray-400">Debug Mode</span>
+          <span className="text-gray-400">Debug</span>
           <button
             onClick={handleToggleDebugMode}
-            className={`relative inline-flex h-4 w-9 items-center rounded-full transition-colors duration-200 ease-in-out border border-gray-300
+            className={`relative inline-flex h-4 w-9 items-center rounded-full transition-colors duration-200 ease-in-out 
               ${isDebugMode ? 'bg-gray-100' : 'bg-gray-100'}
             `}
           >
             <span
-              className={`inline-block h-2 w-2 transform rounded-full transition-transform duration-200 ease-in-out shadow-md
+              className={`inline-block h-2 w-2 transform rounded-full transition-transform duration-200 ease-in-out shadow-md shadow-gray-200
                 ${isDebugMode ? 'translate-x-[22px] bg-white' : 'translate-x-[4px] bg-white'}
               `}
             ></span>
@@ -1230,6 +1241,39 @@ const App = () => {
             <span
               className={`absolute left-1.5 text-[8.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
                 ${isDebugMode ? 'text-gray-400 opacity-100' : 'text-gray-400 opacity-0'}
+              `}
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+            >
+              On
+            </span>
+          </button>
+        </div>
+        <p>•</p> {/* Separator */}
+        {/* Compare Mode Toggle Switch */}
+        <div className="flex items-center space-x-1">
+          <span className="text-gray-400">Compare</span>
+          <button
+            onClick={handleToggleCompareMode}
+            className={`relative inline-flex h-4 w-9 items-center rounded-full transition-colors duration-200 ease-in-out
+              ${isCompareModeEnabled ? 'bg-gray-100' : 'bg-gray-100'}
+            `}
+          >
+            <span
+              className={`inline-block h-2 w-2 transform rounded-full transition-transform duration-200 ease-in-out shadow-md shadow-gray-200
+                ${isCompareModeEnabled ? 'translate-x-[22px] bg-white' : 'translate-x-[4px] bg-white'}
+              `}
+            ></span>
+            <span
+              className={`absolute right-1 text-[8.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+                ${isCompareModeEnabled ? 'text-white opacity-0' : 'text-gray-400 opacity-100'}
+              `}
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+            >
+              Off
+            </span>
+            <span
+              className={`absolute left-1.5 text-[8.5px]  font-bold font-sans transition-opacity duration-200 ease-in-out
+                ${isCompareModeEnabled ? 'text-gray-400 opacity-100' : 'text-gray-400 opacity-0'}
               `}
               style={{ top: '50%', transform: 'translateY(-50%)' }}
             >
